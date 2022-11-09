@@ -8,9 +8,9 @@ const data = '';
 // NOTE: cannot do 'return' straight into '.then', because 'fetch' is ASYNCHRONOUS, not compatible with the synchronous 'function'!
 function simulateCreateUser(url, data) {
   return fetch(url, {
-    method: 'GET'
-    //method: 'POST',
-    //body: data
+    //method: 'GET'
+    method: 'POST',
+    body: data
   })
   .then((response) => response.json());
 }
