@@ -2,8 +2,8 @@ import React, { Component, useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+// NOTE: to use environment variable in React, variable must start with 'REACT_APP_' to actually work properly.
 const url = `${process.env.REACT_APP_USERS_API}`;
-//const url = 'https://gs3sgu22bf.execute-api.us-east-2.amazonaws.com/staging/users';
 
 // NOTE: cannot do 'return' straight into '.then', because 'fetch' is ASYNCHRONOUS, not compatible with the synchronous 'function'!
 function simulateCreateUser(url, data) {
@@ -14,6 +14,8 @@ function simulateCreateUser(url, data) {
   .then((response) => response.json());
 }
 
+// SubmitButton function: creates submit button with message below it
+// Referred to: 'props' in React, 'useEffect', 
 function SubmitButton(props) {
   const user_id = props.user_id;
   const name = props.name;
@@ -23,7 +25,7 @@ function SubmitButton(props) {
 
   useEffect(() => {
     if (isLoading) {
-      const data = JSON.stringify({"user_id": {"S": user_id}, "name": {"S": name}});
+      const data = JSON.stringify({"user_id": {"S": user_id}, "name": {"S": name}}); // MUST stringify the object before putting it into 'fetch' call
 
       simulateCreateUser(url, data)
       .then((res) => {
@@ -34,10 +36,11 @@ function SubmitButton(props) {
         setAppMessage('Uh oh, there was an error creating the item!');
       });
 
-      setLoading(false);
+      setLoading(false); // when fetch call is done, set Submit button back to normal
     };
-  }, [isLoading]);
+  }, [isLoading]); // << useEffect only runs when 'isLoading' changes!
 
+  // submitClickedHandler function: simply just makes 'isLoading' true
   const submitClickedHandler = () => setLoading(true);
 
   return(
@@ -56,6 +59,7 @@ function SubmitButton(props) {
 }
 
 export default class Createpage extends Component {
+  // NOTE: 'state' object MUST be called 'state' in order to use 'setState' later on
   state = {
     user_id: '',
     name: ''
@@ -80,9 +84,10 @@ export default class Createpage extends Component {
               placeholder="Enter Name" 
               onChange={e => this.setState({ name: e.target.value })} />
           </Form.Group>
-        </Form>
 
-        <SubmitButton user_id={this.state.user_id} name={this.state.name}/>
+          {/*NOTE: Adding props to SubmitButton to use as parameters for the function*/}
+          <SubmitButton user_id={this.state.user_id} name={this.state.name}/>
+        </Form>
       </div>
     )
   }
