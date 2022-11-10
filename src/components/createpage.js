@@ -2,33 +2,40 @@ import React, { Component, useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-const url = 'https://official-joke-api.appspot.com/random_joke';
-const data = '';
+const url = `${process.env.REACT_APP_USERS_API}`;
+//const url = 'https://gs3sgu22bf.execute-api.us-east-2.amazonaws.com/staging/users';
 
 // NOTE: cannot do 'return' straight into '.then', because 'fetch' is ASYNCHRONOUS, not compatible with the synchronous 'function'!
 function simulateCreateUser(url, data) {
   return fetch(url, {
-    //method: 'GET'
     method: 'POST',
     body: data
   })
   .then((response) => response.json());
 }
 
-function SubmitButton() {
+function SubmitButton(props) {
+  const user_id = props.user_id;
+  const name = props.name;
+
   const [isLoading, setLoading] = useState(false);
   const [appMessage, setAppMessage] = useState('');
 
   useEffect(() => {
     if (isLoading) {
-        simulateCreateUser(url, data)
-        .then((data) => {
-          console.log(data);
-          setAppMessage('The data has been read!');
-        }).catch((err) => console.log(err));
+      const data = JSON.stringify({"user_id": {"S": user_id}, "name": {"S": name}});
 
-        setLoading(false);
-      };
+      simulateCreateUser(url, data)
+      .then((res) => {
+        console.log(res);
+        setAppMessage('Item has been created!');
+      }).catch((err) => {
+        console.log(err)
+        setAppMessage('Uh oh, there was an error creating the item!');
+      });
+
+      setLoading(false);
+    };
   }, [isLoading]);
 
   const submitClickedHandler = () => setLoading(true);
@@ -49,22 +56,33 @@ function SubmitButton() {
 }
 
 export default class Createpage extends Component {
+  state = {
+    user_id: '',
+    name: ''
+  };
+
   render() {
     return (
       <div>
         <Form>
           <Form.Group className="mb-3" controlId="formUserID">
             <Form.Label>User ID</Form.Label>
-            <Form.Control type="userid" placeholder="Enter User ID" />
+            <Form.Control
+              type="userid"
+              placeholder="Enter User ID"
+              onChange={e => this.setState({ user_id: e.target.value })} />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formName">
             <Form.Label>Name</Form.Label>
-            <Form.Control type="name" placeholder="Enter Name" />
+            <Form.Control
+              type="name"
+              placeholder="Enter Name" 
+              onChange={e => this.setState({ name: e.target.value })} />
           </Form.Group>
         </Form>
 
-        <SubmitButton />
+        <SubmitButton user_id={this.state.user_id} name={this.state.name}/>
       </div>
     )
   }
