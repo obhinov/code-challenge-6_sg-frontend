@@ -64,9 +64,10 @@ function SubmitButton(props) {
 
         {isLoading ? 'Loading...' : 'Submit'}
       </Button>
-      <h1>{appMessage}</h1>
 
-      <ul>{itemsListed}</ul>
+      <i style={{ padding: "20px" }}>{appMessage}</i>
+
+      <ul style={{ padding: "20px" }}>{itemsListed}</ul>
     </div>
   );
 }
@@ -79,7 +80,8 @@ export default class Readpage extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ padding:"20px" }}>
+        <h3 style={{ textAlign: 'center' }}>Read Items</h3>
         <Form>
           <Form.Group className="mb-3" controlId="formUserID">
             <Form.Label>User ID</Form.Label>

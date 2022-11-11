@@ -54,7 +54,7 @@ function SubmitButton(props) {
 
         {isLoading ? 'Loading...' : 'Submit'}
       </Button>
-      <h1>{appMessage}</h1>
+      <i style={{ padding:"20px" }}>{appMessage}</i>
     </div>
   );
 }
@@ -66,7 +66,8 @@ export default class Deletepage extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ padding:"20px" }}>
+        <h3 style={{ textAlign: 'center' }}>Delete Items</h3>
         <Form>
           <Form.Group className="mb-3" controlId="formUserID">
             <Form.Label>User ID</Form.Label>
