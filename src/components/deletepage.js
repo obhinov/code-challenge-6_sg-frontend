@@ -21,6 +21,12 @@ function SubmitButton(props) {
 
   useEffect(() => {
     if (isLoading) {
+      if (user_id=='') {
+        setAppMessage("Please don't leave any fields blank");
+        setLoading(false);
+        return;
+      }
+
       const data = JSON.stringify({"user_id": {"S": user_id}});
 
       simulateDeleteUser(url, data)

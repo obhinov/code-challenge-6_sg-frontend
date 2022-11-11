@@ -22,6 +22,12 @@ function SubmitButton(props) {
 
   useEffect(() => {
     if (isLoading) {
+      if (user_id=='' || name=='') {
+        setAppMessage("Please don't leave any fields blank");
+        setLoading(false);
+        return;
+      }
+      
       const data = JSON.stringify({"user_id": {"S": user_id}, "name": {"S": name}}); // MUST stringify the object before putting it into 'fetch' call
 
       simulateUpdateUser(url, data)

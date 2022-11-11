@@ -26,23 +26,18 @@ function SubmitButton(props) {
 
   const [isLoading, setLoading] = useState(false);
   const [appMessage, setAppMessage] = useState('');
-  //const [itemsToRead, setItemsToRead] = useState([]);
   const [itemsListed, setItemsListed] = useState();
-  //var itemsToRead = [];
-  //var itemsListed;
 
   useEffect((itemsToRead, itemsListed) => {
     if (isLoading) {
 
       simulateReadUser(url, user_id)
       .then((res) => {
-        console.log(res);
-        setAppMessage('Item has been read!');
-        
+        setAppMessage('Items listed below');
+
         if (user_id=='') itemsToRead = res.Items;
         else itemsToRead = [res.Item];
 
-        console.log(itemsToRead);
         setItemsListed(itemsToRead.map((item) =>
           <li key={item.user_id.S}>{item.user_id.S}: {item.name.S}</li>
         ));
@@ -50,6 +45,7 @@ function SubmitButton(props) {
       }).catch((err) => {
         console.log(err)
         setAppMessage('Uh oh, there was an error reading the item!');
+        setItemsListed('');
       });
 
       setLoading(false);
@@ -57,12 +53,6 @@ function SubmitButton(props) {
   }, [isLoading]);
 
   const submitClickedHandler = () => setLoading(true);
-
-  //testing
-  const dataset = [{'user_id': 'rad34', 'name': 'Bobso'}, {'user_id': 'wbi3432', 'name':'Luther'}];
-  const listItems = dataset.map((thingy) =>
-    <li>{thingy.user_id}: {thingy.name}</li>
-  );
 
   return(
     <div>
@@ -95,7 +85,7 @@ export default class Readpage extends Component {
             <Form.Label>User ID</Form.Label>
             <Form.Control
               type="userid"
-              placeholder="Enter User ID"
+              placeholder="Enter User ID (leave blank to read all users)"
               onChange={e => this.setState({ user_id: e.target.value })} />
           </Form.Group>
 

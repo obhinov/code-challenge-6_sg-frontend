@@ -15,7 +15,7 @@ function simulateCreateUser(url, data) {
 }
 
 // SubmitButton function: creates submit button with message below it
-// Referred to: 'props' in React, 'useEffect', 
+// New concepts: 'props' in React, 'useEffect' 
 function SubmitButton(props) {
   const user_id = props.user_id;
   const name = props.name;
@@ -25,6 +25,11 @@ function SubmitButton(props) {
 
   useEffect(() => {
     if (isLoading) {
+      if (user_id=='' || name=='') {
+        setAppMessage("Please don't leave any fields blank");
+        setLoading(false);
+        return;
+      }
       const data = JSON.stringify({"user_id": {"S": user_id}, "name": {"S": name}}); // MUST stringify the object before putting it into 'fetch' call
 
       simulateCreateUser(url, data)
