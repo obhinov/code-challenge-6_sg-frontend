@@ -25,7 +25,7 @@ export default class NavbarComp extends Component {
         
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="#">CRUD App</Navbar.Brand>
+          <Navbar.Brand>CRUD App</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -39,6 +39,7 @@ export default class NavbarComp extends Component {
       </Navbar>
 
       <Routes>
+        <Route path='' element={<Createpage />} />
         <Route path="create" element={<Createpage />} />
         <Route path="read" element={<Readpage />} />
         <Route path="update" element={<Updatepage />} />
